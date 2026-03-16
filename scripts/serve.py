@@ -71,7 +71,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         # Only log API calls, silence static file noise
         first = str(args[0]) if args else ""
         if "/api/" in first:
-            print(f"  [proxy] {args[0]}")
+            print(f"  [proxy] {first}")
 
     def do_GET(self):
         parsed = urllib.parse.urlparse(self.path)

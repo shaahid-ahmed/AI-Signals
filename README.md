@@ -1,6 +1,9 @@
-# AI Signal - Product Updates Dashboard
+# AI Signal — Product Updates Dashboard
 
-> An agent-powered dashboard that monitors the leading AI model providers and surfaces a clean, rolling feed of their latest **genuine product news** - filtered, deduplicated, and honestly dated.
+> An agent-powered dashboard that monitors the leading AI model providers and surfaces a clean, rolling feed of their latest **genuine product news** — filtered, deduplicated, and honestly dated.
+>
+> **100% free to run.** Powered by the Google Gemini free tier — no credit card required.
+
 ---
 
 ## What it does
@@ -29,6 +32,7 @@ This project uses **Google Gemini** (`gemini-2.0-flash-lite`) which has a genero
 | Requests / minute | 15 |
 | Requests / day | 1,500 |
 | Tokens / minute | 1,000,000 |
+| Credit card required | **No** |
 
 **Get your free key:** https://aistudio.google.com/apikey (sign in with Google → Create API key → copy it)
 
@@ -153,9 +157,13 @@ For GitHub Actions, add `GEMINI_API_KEY` as a repository secret under **Settings
 | Layer | Tech |
 |---|---|
 | Frontend | Vanilla HTML5 + CSS3 custom properties + ES2022 modules |
-| AI agent | Google Gemini 2.5 Pro (free tier) |
+| AI agent | Google Gemini 2.0 Flash (free tier) |
 | RSS proxy | allorigins.win (CORS proxy, open-source) |
 | Python utilities | Python 3.11+, `google-generativeai`, `feedparser` |
 | CI/CD | GitHub Actions |
 
 ---
+
+## License
+
+MIT

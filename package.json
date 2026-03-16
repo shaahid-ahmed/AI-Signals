@@ -5,13 +5,17 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "python scripts/serve.py",
-    "lint": "npx eslint frontend/js/**/*.js",
-    "format": "npx prettier --write frontend/js frontend/css frontend/index.html"
+    "dev": "concurrently \"python scripts/serve.py --no-open\" \"vite\"",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint frontend/js/**/*.js",
+    "format": "prettier --write frontend/js frontend/css frontend/index.html"
   },
   "devDependencies": {
+    "concurrently": "^8.2.0",
     "eslint": "^9.0.0",
-    "prettier": "^3.0.0"
+    "prettier": "^3.0.0",
+    "vite": "^5.4.0"
   },
   "engines": {
     "node": ">=18.0.0"

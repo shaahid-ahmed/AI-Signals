@@ -1,11 +1,14 @@
 /**
  * config.example.js
- * Copy this file to config.js and fill in your key:
  *
- *   cp frontend/js/config.example.js frontend/js/config.js
+ * For LOCAL DEV (without Vite):
+ *   Copy this file to config.js and paste your key directly.
  *
- * Get a free Gemini key (no credit card) at:
- *   https://aistudio.google.com/apikey
+ * For VITE / VERCEL (recommended):
+ *   Add VITE_GEMINI_API_KEY=your_key to .env.local
+ *   config.js already reads from import.meta.env automatically.
+ *
+ * Get a free key at: https://aistudio.google.com/apikey
  */
 
-export const GEMINI_API_KEY = 'YOUR_GEMINI_API_KEY_HERE';
+export const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY ?? '';
