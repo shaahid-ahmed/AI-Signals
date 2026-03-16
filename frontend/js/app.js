@@ -132,7 +132,8 @@ function checkConfig() {
       '1. Open  frontend/js/config.js\n' +
       '2. Replace YOUR_GEMINI_API_KEY_HERE with your key\n' +
       '3. Free key: https://aistudio.google.com/apikey';
-    showError(msg);
+    console.log('KEY IS:', GEMINI_API_KEY);
+      showError(msg);
     log.error('Missing Gemini API key — check frontend/js/config.js');
     return false;
   }
