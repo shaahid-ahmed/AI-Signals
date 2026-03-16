@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <title>AI Signal — What shipped in AI</title>
+  <meta name="description" content="Live feed of genuine AI product releases from OpenAI, Anthropic, Google and Microsoft." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,300;1,9..144,500&family=Geist+Mono:wght@400;500&family=Geist:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+
+  <!-- NOISE TEXTURE OVERLAY -->
+  <div class="noise" aria-hidden="true"></div>
+
+  <!-- ── HEADER ── -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-mark">◈</span>
+        <span class="logo-name">AI Signal</span>
+      </div>
+      <nav class="header-nav">
+        <span class="nav-pill" id="sourceStatus">
+          <span class="pulse-ring"></span>
+          <span id="sourceStatusText">Ready</span>
+        </span>
+
+        <!-- Auto-poll controls -->
+        <div class="autopoll-wrap">
+          <label class="autopoll-label" for="autoPollSelect">Auto</label>
+          <select class="autopoll-select" id="autoPollSelect" title="Auto-refresh interval">
+            <option value="off">Off</option>
+            <option value="2">2 min</option>
+            <option value="5" selected>5 min</option>
+            <option value="10">10 min</option>
+            <option value="30">30 min</option>
+          </select>
+          <span class="autopoll-countdown" id="countdownDisplay" hidden></span>
+        </div>
+
+        <span class="clock" id="clock">00:00:00</span>
+      </nav>
+    </div>
+    <!-- Live progress bar -->
+    <div class="progress-bar-track" id="progressTrack" hidden>
+      <div class="progress-bar-fill" id="progressFill"></div>
+    </div>
+  </header>
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <div class="hero-content">
+      <p class="hero-eyebrow">Agent-filtered · Live streaming · Honestly dated</p>
+      <h1 class="hero-headline">
+        What actually<br/><em>shipped</em> in AI
+      </h1>
+      <p class="hero-sub">Signal, not noise — from OpenAI, Anthropic, Google &amp; Microsoft</p>
+    </div>
+
+    <div class="source-grid">
+      <div class="source-card" data-provider="openai">
+        <span class="source-card-dot"></span>
+        <span class="source-card-name">OpenAI</span>
+        <span class="source-card-status" id="src-openai">—</span>
+      </div>
+      <div class="source-card" data-provider="anthropic">
+        <span class="source-card-dot"></span>
+        <span class="source-card-name">Anthropic</span>
+        <span class="source-card-status" id="src-anthropic">—</span>
+      </div>
+      <div class="source-card" data-provider="google">
+        <span class="source-card-dot"></span>
+        <span class="source-card-name">Google</span>
+        <span class="source-card-status" id="src-google">—</span>
+      </div>
+      <div class="source-card" data-provider="microsoft">
+        <span class="source-card-dot"></span>
+        <span class="source-card-name">Microsoft</span>
+        <span class="source-card-status" id="src-microsoft">—</span>
+      </div>
+    </div>
+
+    <button class="run-btn" id="fetchBtn">
+      <span class="run-btn-label">Fetch Latest Updates</span>
+      <span class="run-btn-arrow">→</span>
+    </button>
+  </section>
+
+  <!-- ── MAIN FEED ── -->
+  <main class="feed-main">
+
+    <!-- Error banner (fatal errors only) -->
+    <div class="error-banner" id="errorBanner" role="alert" hidden>
+      <span class="error-icon">⚠</span>
+      <pre id="errorText"></pre>
+      <button class="error-dismiss" id="errorDismiss" title="Dismiss">✕</button>
+    </div>
+
+    <!-- Stats strip (shown after run) -->
+    <div class="stats-strip" id="statsStrip" hidden>
+      <div class="stat-pill accepted"><span id="statAccepted">0</span> signal</div>
+      <div class="stat-pill rejected"><span id="statRejected">0</span> filtered</div>
+      <div class="stat-pill neutral"><span id="statDedup">0</span> deduped</div>
+      <div class="stat-pill neutral"><span id="statFetched">0</span> fetched</div>
+      <div class="stat-pill time"><span id="statRuntime">—</span></div>
+      <span class="stats-timestamp" id="runTimestamp"></span>
+    </div>
+
+    <!-- Filter + Sort toolbar (shown after first run) -->
+    <div class="toolbar" id="toolbar" hidden>
+
+      <!-- Search -->
+      <div class="toolbar-search">
+        <span class="toolbar-search-icon">⌕</span>
+        <input
+          type="search"
+          id="filterSearch"
+          class="toolbar-input"
+          placeholder="Search titles…"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button class="toolbar-clear-search" id="clearSearch" hidden title="Clear">✕</button>
+      </div>
+
+      <!-- Provider filter chips -->
+      <div class="toolbar-chips" id="providerChips" role="group" aria-label="Filter by provider">
+        <button class="chip chip-all active" data-provider="all">All</button>
+        <button class="chip" data-provider="openai">OpenAI</button>
+        <button class="chip" data-provider="anthropic">Anthropic</button>
+        <button class="chip" data-provider="google">Google</button>
+        <button class="chip" data-provider="microsoft">Microsoft</button>
+      </div>
+
+      <!-- Category filter -->
+      <div class="toolbar-select-wrap">
+        <select id="filterCategory" class="toolbar-select">
+          <option value="all">All categories</option>
+          <option value="model_release">Model release</option>
+          <option value="feature_update">Feature update</option>
+          <option value="api_update">API update</option>
+          <option value="capability_announcement">Capability</option>
+          <option value="research">Research</option>
+        </select>
+      </div>
+
+      <!-- Sort -->
+      <div class="toolbar-select-wrap">
+        <select id="sortOrder" class="toolbar-select">
+          <option value="date-desc">Newest first</option>
+          <option value="date-asc">Oldest first</option>
+          <option value="provider">By provider</option>
+          <option value="category">By category</option>
+        </select>
+      </div>
+
+      <!-- Reset + result count -->
+      <button class="toolbar-reset" id="toolbarReset" hidden>Reset filters</button>
+      <span class="toolbar-result-count" id="toolbarResultCount"></span>
+
+    </div>
+
+    <!-- Feed columns -->
+    <div class="feed-columns">
+
+      <!-- ACCEPTED column -->
+      <section class="feed-col" id="acceptedCol">
+        <div class="col-header">
+          <span class="col-label signal">Signal</span>
+          <span class="col-count" id="acceptedCount">0</span>
+          <span class="col-desc">Releases &amp; features</span>
+        </div>
+        <div class="card-stream" id="acceptedStream">
+          <div class="stream-empty" id="acceptedEmpty">
+            Press <strong>Fetch</strong> to load the live feed
+          </div>
+        </div>
+      </section>
+
+      <!-- REJECTED column -->
+      <section class="feed-col" id="rejectedCol">
+        <div class="col-header">
+          <span class="col-label noise">Filtered</span>
+          <span class="col-count" id="rejectedCount">0</span>
+          <span class="col-desc">Noise removed by agent</span>
+        </div>
+        <div class="card-stream" id="rejectedStream">
+          <div class="stream-empty" id="rejectedEmpty">
+            Filtered items will appear here
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ── FOOTER ── -->
+  <footer class="site-footer">
+    <span class="footer-logo">◈ AI Signal</span>
+    <span>Powered by Gemini · RSS feeds · MIT</span>
+    <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">Get free API key →</a>
+  </footer>
+
+  <!-- ── LOG PANEL ── -->
+  <div class="log-panel" id="logPanel">
+    <div class="log-header">
+      <span class="log-title">
+        <span class="log-title-icon">⬡</span>
+        Run Log
+      </span>
+      <div class="log-header-actions">
+        <button class="log-btn-clear" id="logClear" title="Clear log">Clear</button>
+        <button class="log-btn-close" id="logClose" title="Close log">✕</button>
+      </div>
+    </div>
+    <ol class="log-entries" id="logEntries">
+      <li class="log-entry log-idle">Waiting for first run…</li>
+    </ol>
+  </div>
+
+  <!-- Log toggle button (always visible) -->
+  <button class="log-toggle" id="logToggle" aria-label="Toggle log">
+    <span class="log-toggle-icon">⬡</span>
+    <span class="log-toggle-label">Log</span>
+    <span class="log-toggle-badge" id="logBadge" hidden>0</span>
+  </button>
+
+  <script type="module" src="js/app.js?v=8"></script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+# ── Environment & secrets ────────────────────────────────────
+.env
+*.env.local
+*.env.*.local
+
+# Browser config with API key — copy config.example.js → config.js to set up
+frontend/js/config.js
+
+# ── Python ───────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.whl
+.venv/
+venv/
+env/
+.python-version
+pip-log.txt
+
+# ── Dedup state (local run persistence) ─────────────────────
+.ai_signal_seen.json
+
+# ── Output files ─────────────────────────────────────────────
+results.json
+results-*.json
+
+# ── Node / JS ────────────────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-error.log
+.yarn/
+.pnp.*
+
+# ── Editor & OS ──────────────────────────────────────────────
+.DS_Store
+.AppleDouble
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.direnv/
+
+# ── Testing ──────────────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
