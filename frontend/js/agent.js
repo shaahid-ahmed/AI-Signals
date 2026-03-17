@@ -14,7 +14,7 @@
  */
 
 const GEMINI_BASE  = 'https://generativelanguage.googleapis.com/v1beta/models';
-const MODEL        = 'gemini-2.5-flash';
+const MODEL        = 'gemini-2.5-pro';
 const BATCH_SIZE   = 15;
 const RPM_DELAY_MS = 4200;   // ~14 req/min — safely under the 15 RPM free-tier cap
 
