@@ -21,7 +21,7 @@ from src.fetcher.rss import FeedItem
 
 logger = logging.getLogger(__name__)
 
-MODEL       = "gemini-2.0-flash-lite"
+MODEL       = "gemini-2.5-flash"
 BATCH_SIZE  = 15      # conservative for 15 RPM free-tier limit
 RPM_DELAY_S = 4.2     # ~14 req/min to stay under 15 RPM
 
